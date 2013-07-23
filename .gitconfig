@@ -3,3 +3,6 @@
 	email = huntert@gmail.com
 [core]
 	editor = vim
+[color "diff"]
+	old = yellow black bold
+	new = green black bold
