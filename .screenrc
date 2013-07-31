@@ -23,7 +23,8 @@ crlf                  off             # default: off
 hardcopy_append       on              # default: off
 startup_message       off             # default: on
 vbell                 off             # default: ???
-escape	"^Tt"                         # ctrl-A default interferes with emacs keybindings for terminal
+# leave escape as-is for me -- I'm well used to screen & use vim
+#escape	"^Tt"                         # ctrl-A default interferes with emacs keybindings for terminal
 defutf8 on                            # unicode by default
 defscrollback         10000           # default: 100
 silencewait           15              # default: 30
