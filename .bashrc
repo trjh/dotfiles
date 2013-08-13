@@ -82,6 +82,9 @@ fi
 #  non-interactive one is the bash environment used in scripts.
 if [ "$PS1" ]; then
 
+    # don't do this at all.  it breaks backspace as set up via
+    # os-x / iTerm2 / ssh
+    if /bin/false; then
     if [ -x /usr/bin/tput ]; then
       if [ "x`tput kbs`" != "x" ]; then # We can't do this with "dumb" terminal
         stty erase `tput kbs`
@@ -91,6 +94,7 @@ if [ "$PS1" ]; then
         fi
       fi
     fi
+    fi # end disabled section
     case $TERM in
 	xterm*)
 		if [ -e /etc/sysconfig/bash-prompt-xterm ]; then
