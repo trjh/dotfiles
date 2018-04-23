@@ -40,7 +40,7 @@ setopt -o glob			# use filename substitution
 
 limit coredumpsize 20
 
-bindkey -me	# emacs key bindings, like tcsh
+bindkey -e	# emacs key bindings, like tcsh
 
 umask 022 # set default file-protection to user access only
 
@@ -84,8 +84,6 @@ alias	    dir='ls -l \!* | more'
 alias 	   date='/bin/date +"%a %h %d %r %Y"'
 
 alias 	  locks='rlog -R -L RCS/*,v *,v'
-alias 	  xload="xload -rv -geometry 150x150"
-alias   xpurple="xsetroot -solid \#1A0010"
 alias  nslookup="nslookup -query=any"
 #	alias 	  psnup=psnup -w8.5in -h11in	# not in this country!
 # also try pstops -w8.5in -h11in '2:0L@.707(1w,0)+1L@.707(1w,.495h)' in.ps
@@ -93,21 +91,10 @@ alias  nslookup="nslookup -query=any"
 [[ -f $HOME/.words ]] && alias spell='spell +$HOME/.words'
 
 cutls()		{ command ls -1F $* | cut -c1-39 | command column }
-#xless()		{ rxvt -T $1 -e less $1 & }
 xless()		{ xtname $1; less $*; xtname }
-yppa()		{ ypmatch $1 passwd; ypmatch -k $1 aliases }
 noblank()	{ perl -nle 'print unless /^\s*$/;' $1 }
 mdig()		{ dig +pfmin +noqu +noH $* |\
 		  egrep -v '(res.options|got.answer|QUERY:|^$)' }
-maillog()	{ xterm -C -name maillog -display $DISPLAY \
-			-title maillog -geometry 110x12+180+4 \
-			-e $HOME/Mail/Scripts/maillog & }
-vncgerry()	{ if ps -auxw | egrep -q '5950.*maeve'; then
-			vncviewer -encodings "copyrect hextile" localhost:5950
-		  else
-			echo "no ssh tunnel through maeve to gerry..."
-		  fi
-		}
 maken()		{ make -n $1 2>&1 | perl -pe 's/;/;\n/g' }
 unknow()	{ perl -ni -e 'if (/^\S*'$1'\S* (1024|2048|ssh-rsa)/) { print STDERR "removed: $_" }' \
 		         -e 'else { print }' $HOME/.ssh/known_hosts
@@ -139,14 +126,20 @@ ssh()		{ xtname $1; command ssh $*; xtname }
 #
 #[[ -f $HOME/.termcap ]] && export TERMCAP=$HOME/.termcap
 #[[ -d $HOME/.terminfo ]] && export TERMINFO=$HOME/.terminfo
-eval `~/bin/set-term -`
+if [[ -e ~/bin/set-term ]]; then
+    eval `~/bin/set-term -`
+fi
 
 [[ $debug == 1 ]] && echo `getdate now` interactive set-term done
 
 #
+# eternal history file
+#
+precmd () { echo -e $$\\t$USER\\t$HOSTNAME\\tscreen $WINDOW\\t`command date +%D%t%T%t%Y%t%s`\\t$PWD"$(history -1)" >> ~/.zsh_eternal_history }
+
+#
 # final bits -- source local zshrc and make sure we're in home dir
 #
-
 [[ -f .zshrc-$HOST ]] && source .zshrc-$HOST
 
 cd
