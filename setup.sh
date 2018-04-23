@@ -12,3 +12,4 @@ ln -sf dotfiles/.colordiffrc .
 ln -sf dotfiles/.zshrc .
 ln -sf dotfiles/.zshenv .
 ln -sf setup/gitcheck.sh
+touch .zsh_eternal_history
